@@ -1,5 +1,9 @@
-# TypeScript Foundation
+# Shoyu Subgraph
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Use this template when you want to publish a package which will be consumed by a Node 12.x runtime.
+## Ropsten
+[https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-ropsten](https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-ropsten)
+
+## Kovan
+[https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-kovan](https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-kovan)

@@ -16,7 +16,9 @@
     "create:local": "graph create --node http://localhost:8020/ shoyunft/subgraph",
     "remove:local": "graph remove --node http://localhost:8020/ shoyunft/subgraph",
     "deploy:local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 shoyunft/subgraph",
-    "deploy:mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shoyunft/subgraph subgraph.yaml",
+    "deploy:ropsten": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shoyunft/shoyu-ropsten subgraph.yaml",
+    "deploy:kovan": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shoyunft/shoyu-kovan subgraph.yaml",
+    "deploy:mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shoyunft/shoyu subgraph.yaml",
     "prepublish": "tsc",
     "test": "jest"
   },

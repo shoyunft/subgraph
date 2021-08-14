@@ -9,6 +9,5 @@ module.exports = {
     ignorePatterns: ["generated/**/*"],
     rules: {
         "@typescript-eslint/no-var-requires": 0,
-        "@typescript-eslint/explicit-module-boundary-types": 0,
     },
 };
