@@ -1,0 +1,33 @@
+specVersion: 0.1.0
+description: Shoyu NFT Platform
+repository: https://github.com/shoyunft/shoyu
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: TokenFactory
+    network: {{network}}
+    source:
+      address: '{{tokenFactory}}'
+      abi: ITokenFactory
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      entities:
+        - NFTContract
+        - SocialToken
+      abis:
+        - name: ITokenFactory
+          file: node_modules/@shoyunft/contracts/abis/ITokenFactory.json
+      eventHandlers:
+        - event: DeployNFT721(indexed address,indexed address,string,string,uint256[],address,uint8)
+          handler: handleDeployNFT721
+        - event: DeployNFT1155(indexed address,indexed address,uint256[],uint256[],address,uint8)
+          handler: handleDeployNFT1155
+        - event: DeploySocialToken(indexed address,indexed address,string,string,indexed address)
+          handler: handleDeploySocialToken
+        - event: Tag(indexed address,indexed uint256,indexed string,uint256)
+          handler: handleTag
+      file: ./src/mapping.ts

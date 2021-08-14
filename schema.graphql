@@ -1,0 +1,41 @@
+type NFTContract @entity {
+    id: ID! # address
+    owner: Bytes!
+    name: String
+    symbol: String
+    royaltyFeeRecipient: Bytes!
+    royaltyFee: BigInt!
+    nfts: [NFT!]! @derivedFrom(field: "contract")
+}
+
+type NFT @entity {
+    id: ID! # address:tokenId
+    contract: NFTContract
+    address: Bytes!
+    tokenId: BigInt!
+    tagNonce: BigInt!
+    tagCount: Int!
+    tags: [NFTTag!]! @derivedFrom(field: "nft")
+    owners: [NFTOwner!]! @derivedFrom(field: "nft")
+}
+
+type NFTOwner @entity {
+    id: ID! # address:tokenId:owner
+    nft: NFT!
+    address: Bytes!
+    balance: BigInt!
+}
+
+type NFTTag @entity {
+    id: ID! # address:tokenId:tagNonce:index
+    nft: NFT!
+    content: String!
+}
+
+type SocialToken @entity {
+    id: ID! # address
+    owner: Bytes!
+    name: String
+    symbol: String
+    dividendToken: Bytes!
+}

@@ -1,2 +1,5 @@
 dist
 node_modules
+config/*.json
+subgraph.yaml
+generated/**/*

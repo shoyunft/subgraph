@@ -1,13 +1,14 @@
 module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-    'jest'
-  ],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:jest/recommended'
-  ],
+    root: true,
+    env: {
+        node: true,
+    },
+    parser: "@typescript-eslint/parser",
+    plugins: ["@typescript-eslint"],
+    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    ignorePatterns: ["generated/**/*"],
+    rules: {
+        "@typescript-eslint/no-var-requires": 0,
+        "@typescript-eslint/explicit-module-boundary-types": 0,
+    },
 };
