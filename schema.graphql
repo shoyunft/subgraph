@@ -1,5 +1,11 @@
+enum NFTStandard {
+    ERC721
+    ERC1155
+}
+
 type NFTContract @entity {
     id: ID! # address
+    standard: NFTStandard!
     owner: Bytes!
     name: String
     symbol: String
@@ -38,4 +44,18 @@ type SocialToken @entity {
     name: String
     symbol: String
     dividendToken: Bytes!
+}
+
+enum BidStatus {
+    PENDING, CANCELLED, EXECUTED
+}
+
+type Bid @entity {
+    id: ID! # hash
+    status: BidStatus!
+    bidder: Bytes!
+    amount: BigInt!
+    price: BigInt!
+    recipient: Bytes!
+    referrer: Bytes!
 }

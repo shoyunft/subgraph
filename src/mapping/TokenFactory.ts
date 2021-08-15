@@ -1,6 +1,6 @@
 import { BigInt, Bytes, store } from "@graphprotocol/graph-ts";
-import { DeployNFT721, DeployNFT1155, DeploySocialToken, Tag } from "../generated/TokenFactory/ITokenFactory";
-import { NFT, NFTContract, NFTTag, SocialToken } from "../generated/schema";
+import { DeployNFT721, DeployNFT1155, DeploySocialToken, Tag } from "../../generated/TokenFactory/ITokenFactory";
+import { NFT, NFTContract, NFTTag, SocialToken } from "../../generated/schema";
 
 // eslint-disable-next-line
 export function handleDeployNFT721(event: DeployNFT721): void {

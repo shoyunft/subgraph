@@ -12,7 +12,7 @@
 ## Backlog
 - [x] Setup project
 - [x] Index TokenFactory events
-- [ ] Index ERC721Exchange, ERC1155Exchange events
+- [x] Index ERC721Exchange, ERC1155Exchange events
 - [ ] Index NFT721, NFT1155, SocialToken events 
 
 ## License

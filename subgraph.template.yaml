@@ -1,6 +1,6 @@
 specVersion: 0.0.3
 description: Shoyu NFT Platform
-repository: https://github.com/shoyunft/shoyu
+repository: https://github.com/shoyunft/subgraph
 schema:
   file: ./schema.graphql
 dataSources:
@@ -17,6 +17,9 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - NFTContract
+        - NFT
+        - NFTOwner
+        - NFTTag
         - SocialToken
       abis:
         - name: ITokenFactory
@@ -30,4 +33,52 @@ dataSources:
           handler: handleDeploySocialToken
         - event: Tag(indexed address,indexed uint256,indexed string,uint256)
           handler: handleTag
-      file: ./src/mapping.ts
+      file: ./src/mapping/TokenFactory.ts
+  - kind: ethereum/contract
+    name: ERC721ExchangeV0
+    network: {{network}}
+    source:
+      address: '{{erc721Exchange}}'
+      abi: IBaseExchange
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      entities:
+        - Bid
+      abis:
+        - name: IBaseExchange
+          file: node_modules/@shoyunft/contracts/abis/IBaseExchange.json
+      eventHandlers:
+        - event: Bid(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleBid
+        - event: Cancel(indexed bytes32)
+          handler: handleCancel
+        - event: Execute(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleExecute
+      file: ./src/mapping/ERC721ExchangeV0.ts
+  - kind: ethereum/contract
+    name: ERC1155ExchangeV0
+    network: {{network}}
+    source:
+      address: '{{erc1155Exchange}}'
+      abi: IBaseExchange
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      entities:
+        - Bid
+      abis:
+        - name: IBaseExchange
+          file: node_modules/@shoyunft/contracts/abis/IBaseExchange.json
+      eventHandlers:
+        - event: Bid(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleBid
+        - event: Cancel(indexed bytes32)
+          handler: handleCancel
+        - event: Execute(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleExecute
+      file: ./src/mapping/ERC1155ExchangeV0.ts
