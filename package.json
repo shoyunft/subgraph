@@ -11,7 +11,7 @@
     "prepare:ropsten": "node scripts/generate-config --network ropsten && mustache config/ropsten.json subgraph.template.yaml > subgraph.yaml",
     "prepare:kovan": "node scripts/generate-config --network kovan && mustache config/kovan.json subgraph.template.yaml > subgraph.yaml",
     "prepare:mainnet": "node scripts/generate-config --network mainnet && mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
-    "codegen": "graph codegen subgraph.yaml",
+    "codegen": "rimraf generated && graph codegen subgraph.yaml",
     "build": "graph build subgraph.yaml",
     "create:local": "graph create --node http://localhost:8020/ shoyunft/subgraph",
     "remove:local": "graph remove --node http://localhost:8020/ shoyunft/subgraph",
@@ -19,7 +19,6 @@
     "deploy:ropsten": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shoyunft/shoyu-ropsten subgraph.yaml",
     "deploy:kovan": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shoyunft/shoyu-kovan subgraph.yaml",
     "deploy:mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shoyunft/shoyu subgraph.yaml",
-    "prepublish": "tsc",
     "test": "jest"
   },
   "lint-staged": {
@@ -45,11 +44,12 @@
     "mustache": "^4.2.0",
     "option-parser": "^1.0.1",
     "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.5.1",
     "typescript": "^4.1.5"
   },
   "dependencies": {
     "@graphprotocol/graph-ts": "^0.20.0",
-    "@shoyunft/contracts": "^1.0.0-alpha.3"
+    "@shoyunft/contracts": "^1.0.0-alpha.6"
   }
 }

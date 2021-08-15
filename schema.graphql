@@ -28,8 +28,8 @@ type NFT @entity {
 type NFTOwner @entity {
     id: ID! # address:tokenId:owner
     nft: NFT!
-    address: Bytes!
-    balance: BigInt!
+    owner: Bytes!
+    amount: BigInt!
 }
 
 type NFTTag @entity {
@@ -44,6 +44,30 @@ type SocialToken @entity {
     name: String
     symbol: String
     dividendToken: Bytes!
+    syncRecords: [SocialTokenSyncRecord!]! @derivedFrom(field: "token")
+    withdrawals: [SocialTokenWithdrawal!]! @derivedFrom(field: "token")
+}
+
+type SocialTokenSyncRecord @entity {
+    id: ID! # txHash:index
+    token: SocialToken!
+    increased: BigInt!
+}
+
+type SocialTokenWithdrawal @entity {
+    id: ID! # txHash:index
+    token: SocialToken!
+    to: Bytes!
+    amount: BigInt!
+}
+
+type BurnRecord @entity {
+    id: ID! # txHash:index
+    contract: Bytes!
+    tokenId: BigInt
+    amount: BigInt!
+    label: BigInt!
+    data: Bytes!
 }
 
 enum BidStatus {
@@ -52,6 +76,7 @@ enum BidStatus {
 
 type Bid @entity {
     id: ID! # hash
+    exchange: Bytes!
     status: BidStatus!
     bidder: Bytes!
     amount: BigInt!

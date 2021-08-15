@@ -33,7 +33,7 @@ dataSources:
           handler: handleDeploySocialToken
         - event: Tag(indexed address,indexed uint256,indexed string,uint256)
           handler: handleTag
-      file: ./src/mapping/TokenFactory.ts
+      file: ./src/mappings/TokenFactory.ts
   - kind: ethereum/contract
     name: ERC721ExchangeV0
     network: {{network}}
@@ -57,7 +57,7 @@ dataSources:
           handler: handleCancel
         - event: Execute(indexed bytes32,address,uint256,uint256,address,address)
           handler: handleExecute
-      file: ./src/mapping/ERC721ExchangeV0.ts
+      file: ./src/mappings/ERC721ExchangeV0.ts
   - kind: ethereum/contract
     name: ERC1155ExchangeV0
     network: {{network}}
@@ -81,4 +81,90 @@ dataSources:
           handler: handleCancel
         - event: Execute(indexed bytes32,address,uint256,uint256,address,address)
           handler: handleExecute
-      file: ./src/mapping/ERC1155ExchangeV0.ts
+      file: ./src/mappings/ERC1155ExchangeV0.ts
+templates:
+  - name: NFT721Template
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: INFT721
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      file: ./src/mappings/NFT721Template.ts
+      entities:
+        - NFTContract
+        - Bid
+      abis:
+        - name: INFT721
+          file: node_modules/@shoyunft/contracts/abis/INFT721.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: Bid(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleBid
+        - event: Cancel(indexed bytes32)
+          handler: handleCancel
+        - event: Execute(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleExecute
+        - event: Burn(indexed uint256,indexed uint256,bytes32)
+          handler: handleBurn
+  - name: NFT1155Template
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: INFT1155
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      file: ./src/mappings/NFT1155Template.ts
+      entities:
+        - NFTContract
+        - Bid
+      abis:
+        - name: INFT1155
+          file: node_modules/@shoyunft/contracts/abis/INFT1155.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: Bid(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleBid
+        - event: Cancel(indexed bytes32)
+          handler: handleCancel
+        - event: Execute(indexed bytes32,address,uint256,uint256,address,address)
+          handler: handleExecute
+        - event: Burn(indexed uint256,uint256,indexed uint256,bytes32)
+          handler: handleBurn
+  - name: SocialTokenTemplate
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: ISocialToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      file: ./src/mappings/SocialTokenTemplate.ts
+      entities:
+        - SocialToken
+        - Bid
+      abis:
+        - name: ISocialToken
+          file: node_modules/@shoyunft/contracts/abis/ISocialToken.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Sync(uint256)
+          handler: handleSync
+        - event: DividendWithdrawn(indexed address,uint256)
+          handler: handleDividendWithdrawn
+        - event: Burn(uint256,indexed uint256,bytes32)
+          handler: handleBurn

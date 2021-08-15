@@ -695,10 +695,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@shoyunft/contracts@^1.0.0-alpha.3":
-  version "1.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@shoyunft/contracts/-/contracts-1.0.0-alpha.3.tgz#37bd6daed1e1c37895f066883549b1b6feb6f8c5"
-  integrity sha512-avMVCY28xfujim85pOjCYWexIQ8ECLf53Vy/MJjvL+/fotaldOTcKsSoHb24gL7qymXtHnG65l4DzbFMEyhbbw==
+"@shoyunft/contracts@^1.0.0-alpha.6":
+  version "1.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@shoyunft/contracts/-/contracts-1.0.0-alpha.6.tgz#6cd8bd226393349389f481321ad1c3ac64a0d663"
+  integrity sha512-oG8W22IQmbRPI7G6rGiMaZT15oPau9EJ7PsSbwj249UvaXeTMXqLzC64aRAgZFKax8RrEpHV328sIlbMrA6UKA==
   dependencies:
     "@openzeppelin/contracts" "^4.1.0"
 

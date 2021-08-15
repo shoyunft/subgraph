@@ -1,10 +1,10 @@
-import { log } from "@graphprotocol/graph-ts";
+import { dataSource, log } from "@graphprotocol/graph-ts";
 import { Bid } from "../../generated/ERC721ExchangeV0/IBaseExchange";
 import { Bid as BidType } from "../../generated/schema";
 
-// eslint-disable-next-line
 export function handleBid(event: Bid): void {
     const bid = new BidType(event.params.hash.toHex());
+    bid.exchange = dataSource.address();
     bid.status = "PENDING";
     bid.bidder = event.params.bidder;
     bid.amount = event.params.amount;
