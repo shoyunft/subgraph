@@ -2,8 +2,23 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Ropsten
+## Deployments
+### Ropsten
 [https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-ropsten](https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-ropsten)
 
-## Kovan
+### Kovan
 [https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-kovan](https://thegraph.com/legacy-explorer/subgraph/shoyunft/shoyu-kovan)
+
+## Backlog
+- [x] Setup project
+- [x] Index TokenFactory events
+- [ ] Index ERC721Exchange, ERC1155Exchange events
+- [ ] Index NFT721, NFT1155, SocialToken events 
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+
+* [LevX](https://twitter.com/LevxApp/)
