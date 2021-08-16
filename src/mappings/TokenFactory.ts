@@ -11,7 +11,7 @@ export function handleDeployNFT721(event: DeployNFT721): void {
     contract.name = event.params.name;
     contract.symbol = event.params.symbol;
     contract.royaltyFeeRecipient = event.params.royaltyFeeRecipient;
-    contract.royaltyFee = BigInt.fromI32(event.params.royaltyFee);
+    contract.royaltyFee = event.params.royaltyFee;
     contract.save();
 
     NFT721Template.create(Address.fromString(address));
@@ -24,7 +24,7 @@ export function handleDeployNFT1155(event: DeployNFT1155): void {
     contract.owner = event.params.owner;
     contract.owner = event.params.owner;
     contract.royaltyFeeRecipient = event.params.royaltyFeeRecipient;
-    contract.royaltyFee = BigInt.fromI32(event.params.royaltyFee);
+    contract.royaltyFee = event.params.royaltyFee;
     contract.save();
 
     NFT1155Template.create(Address.fromString(address));

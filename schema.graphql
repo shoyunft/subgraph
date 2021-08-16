@@ -10,7 +10,7 @@ type NFTContract @entity {
     name: String
     symbol: String
     royaltyFeeRecipient: Bytes!
-    royaltyFee: BigInt!
+    royaltyFee: Int!
     nfts: [NFT!]! @derivedFrom(field: "contract")
 }
 
