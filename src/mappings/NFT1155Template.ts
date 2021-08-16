@@ -1,29 +1,67 @@
-import { Address, BigInt, log, store } from "@graphprotocol/graph-ts";
+import { Address, BigInt, store } from "@graphprotocol/graph-ts";
 import {
     Bid,
+    Bid1Call,
+    BidCall,
     Burn,
     OwnershipTransferred,
     TransferBatch,
     TransferSingle,
 } from "../../generated/templates/NFT1155Template/INFT1155";
-import { Bid as BidType, BurnRecord, NFT, NFTContract, NFTOwner } from "../../generated/schema";
-import { createNFT } from "./helpers";
+import { NFT, NFTOwner } from "../../generated/schema";
+import { createBurnRecord, createNFT } from "./helpers/helpers";
 import { ADDRESS_ZERO } from "./constants";
+import {
+    AskOrderParams,
+    BidParams,
+    CancelParams,
+    createOrder,
+    ExecuteParams,
+    updateOrderOnBid,
+    updateOrderOnCancel,
+    updateOrderOnExecute,
+} from "./helpers/exchange-helpers";
+import { OwnershipTransferredParams, transferOwnership } from "./helpers/ownership-transfer-helpers";
+
+export function handleBid1Call(call: Bid1Call): void {
+    createOrder(call.inputs.askOrder as AskOrderParams);
+}
+
+export function handleBidCall(call: BidCall): void {
+    createOrder(call.inputs.askOrder as AskOrderParams);
+}
+
+export function handleBid(event: Bid): void {
+    updateOrderOnBid(event.params as BidParams);
+}
+
+export function handleCancel(event: Bid): void {
+    updateOrderOnCancel(event.params as CancelParams);
+}
+
+export function handleExecute(event: Bid): void {
+    updateOrderOnExecute(event.params as ExecuteParams);
+}
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
-    const address = event.address.toHex();
-    const token = NFTContract.load(address);
-    if (token) {
-        token.owner = event.params.newOwner;
-        token.save();
-    } else {
-        log.warning("No matching NFT1155 with address: {}", [address]);
-    }
+    transferOwnership(event.address, event.params as OwnershipTransferredParams);
+}
+
+export function handleBurn(event: Burn): void {
+    createBurnRecord(
+        event.transaction.hash,
+        event.logIndex,
+        event.address,
+        event.params.tokenId,
+        event.params.amount,
+        event.params.label,
+        event.params.data
+    );
 }
 
 export function handleTransferSingle(event: TransferSingle): void {
-    const tokenId = event.params.id;
-    const id = event.address.toHex() + ":" + tokenId.toString();
+    let tokenId = event.params.id;
+    let id = event.address.toHex() + ":" + tokenId.toString();
     let nft = NFT.load(id);
     if (!nft) {
         nft = createNFT(event.address, tokenId);
@@ -32,11 +70,11 @@ export function handleTransferSingle(event: TransferSingle): void {
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
-    const ids = event.params.ids;
-    const values = event.params.values;
+    let ids = event.params.ids;
+    let values = event.params.values;
     for (let i = 0; i < ids.length; i++) {
-        const tokenId = ids[i];
-        const id = event.address.toHex() + ":" + tokenId.toString();
+        let tokenId = ids[i];
+        let id = event.address.toHex() + ":" + tokenId.toString();
         let nft = NFT.load(id);
         if (!nft) {
             nft = createNFT(event.address, tokenId);
@@ -56,9 +94,9 @@ function transfer(from: Address, to: Address, id: string, amount: BigInt, nft: N
     }
 }
 
-function burn(id: string, from: Address, amount: BigInt): void {
-    const ownerId = id + ":" + from.toHex();
-    const owner = NFTOwner.load(ownerId);
+export function burn(nftId: string, from: Address, amount: BigInt): void {
+    let ownerId = nftId + ":" + from.toHex();
+    let owner = NFTOwner.load(ownerId);
     if (!owner) {
         return;
     }
@@ -70,8 +108,8 @@ function burn(id: string, from: Address, amount: BigInt): void {
     }
 }
 
-function mint(id: string, to: Address, amount: BigInt, nft: NFT): void {
-    const ownerId = id + ":" + to.toHex();
+export function mint(nftId: string, to: Address, amount: BigInt, nft: NFT): void {
+    let ownerId = nftId + ":" + to.toHex();
     let owner = NFTOwner.load(ownerId);
     if (!owner) {
         owner = new NFTOwner(ownerId);
@@ -82,52 +120,4 @@ function mint(id: string, to: Address, amount: BigInt, nft: NFT): void {
         owner.amount = owner.amount.plus(amount);
     }
     owner.save();
-}
-
-export function handleBid(event: Bid): void {
-    const bid = new BidType(event.params.hash.toHex());
-    bid.exchange = event.address;
-    bid.status = "PENDING";
-    bid.bidder = event.params.bidder;
-    bid.amount = event.params.amount;
-    bid.price = event.params.price;
-    bid.recipient = event.params.recipient;
-    bid.referrer = event.params.referrer;
-    bid.save();
-}
-
-export function handleCancel(event: Bid): void {
-    const hash = event.params.hash.toHex();
-    const bid = BidType.load(hash);
-    if (!bid) {
-        log.warning("Cannot find a bid with hash: {}", [hash]);
-        return;
-    }
-    bid.status = "CANCELLED";
-    bid.save();
-}
-
-export function handleExecute(event: Bid): void {
-    const hash = event.params.hash.toHex();
-    let bid = BidType.load(hash);
-    if (!bid) {
-        bid = new BidType(hash);
-        bid.bidder = event.params.bidder;
-        bid.amount = event.params.amount;
-        bid.price = event.params.price;
-        bid.recipient = event.params.recipient;
-        bid.referrer = event.params.referrer;
-    }
-    bid.status = "EXECUTED";
-    bid.save();
-}
-
-export function handleBurn(event: Burn): void {
-    const record = new BurnRecord(event.transaction.hash.toHex() + ":" + event.logIndex.toString());
-    record.contract = event.address;
-    record.tokenId = event.params.tokenId;
-    record.amount = event.params.amount;
-    record.label = event.params.label;
-    record.data = event.params.data;
-    record.save();
 }

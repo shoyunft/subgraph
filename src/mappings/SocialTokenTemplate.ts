@@ -1,28 +1,35 @@
-import { log } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
+import { SocialToken, SocialTokenSyncRecord, SocialTokenWithdrawal } from "../../generated/schema";
+import { OwnershipTransferredParams, transferOwnership } from "./helpers/ownership-transfer-helpers";
 import {
-    Sync,
-    DividendWithdrawn,
     Burn,
+    DividendWithdrawn,
     OwnershipTransferred,
+    Sync,
 } from "../../generated/templates/SocialTokenTemplate/ISocialToken";
-import { BurnRecord, SocialToken, SocialTokenSyncRecord, SocialTokenWithdrawal } from "../../generated/schema";
+import { createBurnRecord } from "./helpers/helpers";
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
-    const address = event.address.toHex();
-    const token = SocialToken.load(address);
-    if (token) {
-        token.owner = event.params.newOwner;
-        token.save();
-    } else {
-        log.warning("No matching SocialToken with address: {}", [address]);
-    }
+    transferOwnership(event.address, event.params as OwnershipTransferredParams);
+}
+
+export function handleBurn(event: Burn): void {
+    createBurnRecord(
+        event.transaction.hash,
+        event.logIndex,
+        event.address,
+        BigInt.fromI32(0),
+        event.params.amount,
+        event.params.label,
+        event.params.data
+    );
 }
 
 export function handleSync(event: Sync): void {
-    const address = event.address.toHex();
-    const token = SocialToken.load(address);
+    let address = event.address.toHex();
+    let token = SocialToken.load(address);
     if (token) {
-        const record = new SocialTokenSyncRecord(event.transaction.hash.toHex() + ":" + event.logIndex.toString());
+        let record = new SocialTokenSyncRecord(event.transaction.hash.toHex() + ":" + event.logIndex.toString());
         record.token = token.id;
         record.increased = event.params.increased;
         record.save();
@@ -32,10 +39,10 @@ export function handleSync(event: Sync): void {
 }
 
 export function handleDividendWithdrawn(event: DividendWithdrawn): void {
-    const address = event.address.toHex();
-    const token = SocialToken.load(address);
+    let address = event.address.toHex();
+    let token = SocialToken.load(address);
     if (token) {
-        const record = new SocialTokenWithdrawal(event.transaction.hash.toHex() + ":" + event.logIndex.toString());
+        let record = new SocialTokenWithdrawal(event.transaction.hash.toHex() + ":" + event.logIndex.toString());
         record.token = token.id;
         record.to = event.params.to;
         record.amount = event.params.amount;
@@ -43,13 +50,4 @@ export function handleDividendWithdrawn(event: DividendWithdrawn): void {
     } else {
         log.warning("No matching SocialToken with address: {}", [address]);
     }
-}
-
-export function handleBurn(event: Burn): void {
-    const record = new BurnRecord(event.transaction.hash.toHex() + ":" + event.logIndex.toString());
-    record.contract = event.address;
-    record.amount = event.params.amount;
-    record.label = event.params.label;
-    record.data = event.params.data;
-    record.save();
 }

@@ -70,17 +70,28 @@ type BurnRecord @entity {
     data: Bytes!
 }
 
-enum BidStatus {
-    PENDING, CANCELLED, EXECUTED
+enum OrderStatus {
+    INVALID, PENDING, CANCELLED, EXECUTED
 }
 
-type Bid @entity {
+type Order @entity {
     id: ID! # hash
     exchange: Bytes!
-    status: BidStatus!
-    bidder: Bytes!
+    status: OrderStatus!
+    # ask
+    maker: Bytes!
+    token: Bytes!
+    tokenId: BigInt!
     amount: BigInt!
-    price: BigInt!
+    strategy: Bytes!
+    currency: Bytes!
     recipient: Bytes!
-    referrer: Bytes!
+    deadline: BigInt!
+    params: Bytes!
+    # bid
+    bidder: Bytes!
+    bidAmount: BigInt!
+    bidPrice: BigInt!
+    bidRecipient: Bytes!
+    bidReferrer: Bytes!
 }

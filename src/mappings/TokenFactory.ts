@@ -4,8 +4,8 @@ import { NFT721Template, NFT1155Template, SocialTokenTemplate } from "../../gene
 import { NFT, NFTContract, NFTTag, SocialToken } from "../../generated/schema";
 
 export function handleDeployNFT721(event: DeployNFT721): void {
-    const address = event.params.proxy.toHex();
-    const contract = new NFTContract(address);
+    let address = event.params.proxy.toHex();
+    let contract = new NFTContract(address);
     contract.standard = "ERC721";
     contract.owner = event.params.owner;
     contract.name = event.params.name;
@@ -18,8 +18,8 @@ export function handleDeployNFT721(event: DeployNFT721): void {
 }
 
 export function handleDeployNFT1155(event: DeployNFT1155): void {
-    const address = event.params.proxy.toHex();
-    const contract = new NFTContract(address);
+    let address = event.params.proxy.toHex();
+    let contract = new NFTContract(address);
     contract.standard = "ERC1155";
     contract.owner = event.params.owner;
     contract.owner = event.params.owner;
@@ -31,8 +31,8 @@ export function handleDeployNFT1155(event: DeployNFT1155): void {
 }
 
 export function handleDeploySocialToken(event: DeploySocialToken): void {
-    const address = event.params.proxy.toHex();
-    const token = new SocialToken(address);
+    let address = event.params.proxy.toHex();
+    let token = new SocialToken(address);
     token.owner = event.params.owner;
     token.name = event.params.name;
     token.symbol = event.params.symbol;
@@ -43,29 +43,29 @@ export function handleDeploySocialToken(event: DeploySocialToken): void {
 }
 
 export function handleTag(event: Tag): void {
-    const tag = event.params.tag.toString().trim();
+    let tag = event.params.tag.toString().trim();
     if (tag.length > 0) {
-        const nftId = event.params.nft.toHex() + ":" + event.params.tokenId.toString();
-        const nft = NFT.load(nftId);
+        let nftId = event.params.nft.toHex() + ":" + event.params.tokenId.toString();
+        let nft = NFT.load(nftId);
         if (!nft) {
             log.warning("No matching NFT with id: {}", [nftId]);
             return;
         }
         // remove previous tags
-        const nonce = event.params.tagNonce;
+        let nonce = event.params.tagNonce;
         if (nonce.gt(BigInt.fromI32(0))) {
-            const prevNonce = nonce.minus(BigInt.fromI32(1));
+            let prevNonce = nonce.minus(BigInt.fromI32(1));
             if (prevNonce.equals(nft.tagNonce)) {
                 for (let i = 0; i < nft.tagCount; i++) {
-                    const tagId = nftId.toString() + ":" + prevNonce.toString() + ":" + i.toString();
+                    let tagId = nftId.toString() + ":" + prevNonce.toString() + ":" + i.toString();
                     store.remove("NFTTag", tagId);
                 }
             }
         }
 
         // register new tag
-        const index = nft.tagCount;
-        const tag = new NFTTag(nftId + ":" + event.params.tagNonce.toString() + ":" + index.toString());
+        let index = nft.tagCount;
+        let tag = new NFTTag(nftId + ":" + event.params.tagNonce.toString() + ":" + index.toString());
         tag.content = event.params.tag.toString();
         tag.save();
 

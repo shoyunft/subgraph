@@ -8,6 +8,8 @@ module.exports = {
     extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     ignorePatterns: ["generated/**/*"],
     rules: {
+        "prefer-const": 0,
         "@typescript-eslint/no-var-requires": 0,
+        "@typescript-eslint/no-non-null-assertion": 0,
     },
 };
