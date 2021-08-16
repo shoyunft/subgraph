@@ -1,6 +1,6 @@
 import { hashOrder } from "./helpers";
 import { Order } from "../../../generated/schema";
-import { dataSource, log } from "@graphprotocol/graph-ts/index";
+import { log } from "@graphprotocol/graph-ts/index";
 import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 export class AskOrderParams {
@@ -29,7 +29,7 @@ export class BidParams {
 }
 export type ExecuteParams = BidParams;
 
-export function createOrder(params: AskOrderParams): void {
+export function createOrder(address: Bytes, params: AskOrderParams): void {
     let hash = hashOrder(
         params.signer,
         params.token,
@@ -42,7 +42,7 @@ export function createOrder(params: AskOrderParams): void {
         params.params
     );
     let order = new Order(hash.toHex());
-    order.exchange = dataSource.address();
+    order.exchange = address;
     order.status = "INVALID";
     order.maker = params.signer;
     order.token = params.token;

@@ -23,11 +23,11 @@ import {
 import { OwnershipTransferredParams, transferOwnership } from "./helpers/ownership-transfer-helpers";
 
 export function handleBid1Call(call: Bid1Call): void {
-    createOrder(call.inputs.askOrder as AskOrderParams);
+    createOrder(call.to, call.inputs.askOrder as AskOrderParams);
 }
 
 export function handleBidCall(call: BidCall): void {
-    createOrder(call.inputs.askOrder as AskOrderParams);
+    createOrder(call.to, call.inputs.askOrder as AskOrderParams);
 }
 
 export function handleBid(event: Bid): void {

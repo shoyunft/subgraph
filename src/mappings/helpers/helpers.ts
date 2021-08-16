@@ -50,7 +50,6 @@ export function hashOrder(
     params: Bytes
 ): ByteArray {
     let paramsHash = crypto.keccak256(params);
-
     let tupleArray: Array<ethereum.Value> = [
         ethereum.Value.fromBytes(ORDER_TYPEHASH as Bytes),
         ethereum.Value.fromAddress(signer as Address),
