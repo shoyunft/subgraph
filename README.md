@@ -13,7 +13,7 @@
 - [x] Setup project
 - [x] Index TokenFactory events
 - [x] Index ERC721Exchange, ERC1155Exchange events
-- [ ] Index NFT721, NFT1155, SocialToken events 
+- [x] Index NFT721, NFT1155, SocialToken events 
 
 ## License
 
