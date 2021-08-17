@@ -64,7 +64,7 @@ export function handleTransferSingle(event: TransferSingle): void {
     let id = event.address.toHex() + ":" + tokenId.toString();
     let nft = NFT.load(id);
     if (!nft) {
-        nft = createNFT(event.address, tokenId);
+        nft = createNFT(event.address, tokenId, false);
     }
     transfer(event.params.from, event.params.to, id, event.params.value, nft!);
 }
@@ -77,7 +77,7 @@ export function handleTransferBatch(event: TransferBatch): void {
         let id = event.address.toHex() + ":" + tokenId.toString();
         let nft = NFT.load(id);
         if (!nft) {
-            nft = createNFT(event.address, tokenId);
+            nft = createNFT(event.address, tokenId, false);
         }
         transfer(event.params.from, event.params.to, id, values[i], nft!);
     }

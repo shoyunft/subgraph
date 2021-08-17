@@ -19,6 +19,7 @@ type NFT @entity {
     contract: NFTContract
     address: Bytes!
     tokenId: BigInt!
+    parked: Boolean!
     tagNonce: BigInt!
     tagCount: Int!
     tags: [NFTTag!]! @derivedFrom(field: "nft")

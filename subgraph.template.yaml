@@ -117,6 +117,8 @@ templates:
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
+        - event: ParkTokenIds(uint256)
+          handler: handleParkTokenIds
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
         - event: Bid(indexed bytes32,address,uint256,uint256,address,address)

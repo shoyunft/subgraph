@@ -4,13 +4,14 @@ import { Address } from "@graphprotocol/graph-ts";
 
 let ORDER_TYPEHASH = Bytes.fromHexString("0x17fdf8831f8bd77353b30f42ba9bc64e7144545a42a890389f298feeb45dec88");
 
-export function createNFT(address: Bytes, tokenId: BigInt): NFT {
+export function createNFT(address: Bytes, tokenId: BigInt, parked: boolean): NFT {
     let contract = NFTContract.load(address.toHex());
 
     let nftId = address.toHex() + ":" + tokenId.toString();
     let nft = new NFT(nftId);
     if (contract) nft.contract = contract.id;
     nft.address = address;
+    nft.parked = parked;
     nft.tokenId = tokenId;
     nft.tagNonce = BigInt.fromI32(0);
     nft.tagCount = 0;

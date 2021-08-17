@@ -5,6 +5,7 @@ import {
     BidCall,
     Burn,
     OwnershipTransferred,
+    ParkTokenIds,
     Transfer,
 } from "../../generated/templates/NFT721Template/INFT721";
 import { NFT, NFTOwner } from "../../generated/schema";
@@ -58,12 +59,22 @@ export function handleBurn(event: Burn): void {
     );
 }
 
+export function handleParkTokenIds(event: ParkTokenIds): void {
+    let to = event.params.toTokenId;
+    for (let id = BigInt.fromI32(0); id.lt(to); id = id.plus(BigInt.fromI32(1))) {
+        createNFT(event.address, id, true);
+    }
+}
+
 export function handleTransfer(event: Transfer): void {
     let tokenId = event.params.tokenId;
     let id = event.address.toHex() + ":" + tokenId.toString();
     let nft = NFT.load(id);
     if (!nft) {
-        nft = createNFT(event.address, tokenId);
+        nft = createNFT(event.address, tokenId, false);
+    } else if (nft.parked) {
+        nft.parked = false;
+        nft.save();
     }
 
     let from = event.params.from;
