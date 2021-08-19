@@ -25,8 +25,10 @@ dataSources:
         - name: ITokenFactory
           file: node_modules/@shoyunft/contracts/abis/ITokenFactory.json
       eventHandlers:
-        - event: DeployNFT721(indexed address,indexed address,string,string,uint256[],address,uint8)
+        - event: DeployNFT721(indexed address,indexed address,string,string,uint256,address,uint8)
           handler: handleDeployNFT721
+        - event: DeployNFT721(indexed address,indexed address,string,string,uint256[],address,uint8)
+          handler: handleDeployNFT721_1
         - event: DeployNFT1155(indexed address,indexed address,uint256[],uint256[],address,uint8)
           handler: handleDeployNFT1155
         - event: DeploySocialToken(indexed address,indexed address,string,string,indexed address)

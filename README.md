@@ -14,6 +14,7 @@
 - [x] Index TokenFactory events
 - [x] Index ERC721Exchange, ERC1155Exchange events
 - [x] Index NFT721, NFT1155, SocialToken events 
+- [ ] Index PaymentSplitterFactory events
 
 ## License
 

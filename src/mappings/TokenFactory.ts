@@ -1,9 +1,29 @@
 import { Address, BigInt, log, store } from "@graphprotocol/graph-ts";
-import { DeployNFT721, DeployNFT1155, DeploySocialToken, Tag } from "../../generated/TokenFactory/ITokenFactory";
+import {
+    DeployNFT721,
+    DeployNFT1155,
+    DeploySocialToken,
+    Tag,
+    DeployNFT7211,
+} from "../../generated/TokenFactory/ITokenFactory";
 import { NFT721Template, NFT1155Template, SocialTokenTemplate } from "../../generated/templates";
 import { NFT, NFTContract, NFTTag, SocialToken } from "../../generated/schema";
 
 export function handleDeployNFT721(event: DeployNFT721): void {
+    let address = event.params.proxy.toHex();
+    let contract = new NFTContract(address);
+    contract.standard = "ERC721";
+    contract.owner = event.params.owner;
+    contract.name = event.params.name;
+    contract.symbol = event.params.symbol;
+    contract.royaltyFeeRecipient = event.params.royaltyFeeRecipient;
+    contract.royaltyFee = event.params.royaltyFee;
+    contract.save();
+
+    NFT721Template.create(Address.fromString(address));
+}
+
+export function handleDeployNFT721_1(event: DeployNFT7211): void {
     let address = event.params.proxy.toHex();
     let contract = new NFTContract(address);
     contract.standard = "ERC721";
