@@ -18,9 +18,10 @@ export function handleDeployNFT721(event: DeployNFT721): void {
     contract.symbol = event.params.symbol;
     contract.royaltyFeeRecipient = event.params.royaltyFeeRecipient;
     contract.royaltyFee = event.params.royaltyFee;
-    contract.save();
 
     NFT721Template.create(Address.fromString(address));
+
+    contract.save();
 }
 
 export function handleDeployNFT721_1(event: DeployNFT7211): void {
@@ -32,9 +33,10 @@ export function handleDeployNFT721_1(event: DeployNFT7211): void {
     contract.symbol = event.params.symbol;
     contract.royaltyFeeRecipient = event.params.royaltyFeeRecipient;
     contract.royaltyFee = event.params.royaltyFee;
-    contract.save();
 
     NFT721Template.create(Address.fromString(address));
+
+    contract.save();
 }
 
 export function handleDeployNFT1155(event: DeployNFT1155): void {
@@ -45,9 +47,10 @@ export function handleDeployNFT1155(event: DeployNFT1155): void {
     contract.owner = event.params.owner;
     contract.royaltyFeeRecipient = event.params.royaltyFeeRecipient;
     contract.royaltyFee = event.params.royaltyFee;
-    contract.save();
 
     NFT1155Template.create(Address.fromString(address));
+
+    contract.save();
 }
 
 export function handleDeploySocialToken(event: DeploySocialToken): void {
@@ -57,9 +60,10 @@ export function handleDeploySocialToken(event: DeploySocialToken): void {
     token.name = event.params.name;
     token.symbol = event.params.symbol;
     token.dividendToken = event.params.dividendToken;
-    token.save();
 
     SocialTokenTemplate.create(Address.fromString(address));
+
+    token.save();
 }
 
 export function handleTag(event: Tag): void {
